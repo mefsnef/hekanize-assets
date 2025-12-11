@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations: Your AI Assistant for Perfect Store Execution | HEKA TRM at NRF 2026</title>
+    <meta name="description" content="HEKA TRM is your team's personal AI assistant. Visual Merchandising workflows, Store Visit management, and intelligent task execution. Meet us at NRF 2026, Booth #2803.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --dark-bg: #000000;
+            --dark-surface: #0F0F0F;
+            --dark-elevated: #1A1A1A;
+            --dark-border: #2A2A2A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #6B6B6B;
+            --accent-orange: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--dark-border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nrf-badge {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-surface) 100%);
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 60px);
+            font-weight: 900;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .hero .description {
+            font-size: clamp(16px, 2vw, 19px);
+            max-width: 800px;
+            margin: 0 auto 48px;
+            color: var(--text-tertiary);
+            line-height: 1.7;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .cta-secondary {
+            background: var(--dark-elevated);
+            color: var(--text-primary);
+            border: 2px solid var(--dark-border);
+        }
+
+        .cta-secondary:hover {
+            background: var(--dark-surface);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--dark-surface);
+            padding: 60px 0;
+            border-top: 1px solid var(--dark-border);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 24px;
+            border-radius: 16px;
+            background: var(--dark-elevated);
+            border: 1px solid var(--dark-border);
+        }
+
+        .stat-item h3 {
+            font-size: clamp(40px, 6vw, 56px);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .stat-item p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            text-align: center;
+            color: var(--text-tertiary);
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Card Grids */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--dark-elevated);
+            padding: 32px;
+            border-radius: 20px;
+            border: 1px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Vertical Modules Hero Section */
+        .vertical-modules {
+            padding: 100px 0;
+            background: var(--dark-bg);
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .module-card {
+            background: var(--dark-elevated);
+            padding: 40px 32px;
+            border-radius: 20px;
+            border: 2px solid var(--dark-border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(16, 185, 129, 0.3);
+        }
+
+        .module-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .module-card h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .module-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .module-features {
+            text-align: left;
+            background: rgba(16, 185, 129, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .module-features h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .module-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .module-features li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .module-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .module-roi {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* NRF Section */
+        .nrf-section {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .nrf-section h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            margin-bottom: 24px;
+        }
+
+        .nrf-details {
+            font-size: clamp(20px, 3vw, 28px);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .nrf-info {
+            font-size: clamp(16px, 2vw, 20px);
+            margin-bottom: 48px;
+            opacity: 0.95;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 100px 0;
+            background: var(--dark-surface);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--dark-elevated);
+            padding: 48px;
+            border-radius: 24px;
+            border: 1px solid var(--dark-border);
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--dark-border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-surface);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: var(--text-secondary);
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        footer p {
+            margin-bottom: 12px;
+        }
+
+        footer .tagline {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0 50px;
+            }
+            .section {
+                padding: 60px 0;
+            }
+            .cta-button, .cta-secondary {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">HEKA TRM</div>
+                <div class="nrf-badge">NRF 2026 · Booth #2803</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your AI Assistant for Perfect Store Execution</h1>
+                <p class="subtitle">One Interface. All Your Tools. Plus Retail-Specific Workflows.</p>
+                <p class="description">
+                    Stop logging into 8 different systems. HEKA TRM connects your scheduling, training, and task tools into one intelligent assistant. Plus Visual Merchandising, Store Visit, and Academy modules that deliver real time and cost savings.
+                </p>
+                <div class="cta-container">
+                    <a href="#meeting" class="cta-button">See It In Action at NRF</a>
+                    <a href="#modules" class="cta-secondary">Explore Modules</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>67%</h3>
+                    <p>Faster Task Feedback</p>
+                </div>
+                <div class="stat-item">
+                    <h3>83%</h3>
+                    <p>Daily Active Usage</p>
+                </div>
+                <div class="stat-item">
+                    <h3>30%</h3>
+                    <p>More Store Visits/Day</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2-3hrs</h3>
+                    <p>Saved per Store/Week</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">The Challenges You Face Every Day</h2>
+            <p class="section-subtitle">
+                Running multi-location retail operations shouldn't be this hard
+            </p>
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">📱</span>
+                    <h3>Tool Switching Chaos</h3>
+                    <p>Training in one system. Schedule in another. Tasks in a third. Communication in Slack. Your team logs in 8 times to find one answer. Productivity killer.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📸</span>
+                    <h3>No Visual Merchandising Workflow</h3>
+                    <p>VM guidelines via email. Photos via WhatsApp. Approvals take weeks. No compliance visibility. Manual chaos for every seasonal display change.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">✅</span>
+                    <h3>Store Visits Are Inefficient</h3>
+                    <p>Paper checklists. No issue tracking. Follow-ups get lost. Can't scale beyond 10-12 stores per week. District managers spend more time on paperwork than coaching.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🤖</span>
+                    <h3>Everything Is Reactive</h3>
+                    <p>Associate asks "What training do I need?" You check the LMS, send link. Reactive friction everywhere. Need proactive, role-aware intelligence.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>No Real-Time Visibility</h3>
+                    <p>Which stores completed VM? Who needs follow-up? Task completion status? Data scattered across 8 tools. Can't see the big picture in real-time.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🎓</span>
+                    <h3>Training Doesn't Reach Stores</h3>
+                    <p>Enterprise LMS too expensive for 500 associates. Generic content doesn't match retail needs. Completion rates below 60%. Mobile experience terrible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="modules" class="vertical-modules">
+        <div class="container">
+            <h2 class="section-title">Retail-Specific Modules With Proven ROI</h2>
+            <p class="section-subtitle">Not just integration. Unique capabilities that deliver measurable time and cost savings.</p>
+
+            <div class="module-grid">
+                <div class="module-card">
+                    <div class="module-icon">📸</div>
+                    <h3>Visual Merchandising</h3>
+                    <p>End-to-end VM execution and compliance management for all your stores.</p>
+
+                    <div class="module-features">
+                        <h4>What It Does:</h4>
+                        <ul>
+                            <li>Step-by-step checklists for displays</li>
+                            <li>Photo capture with AI validation</li>
+                            <li>Approval workflows (store → regional → HQ)</li>
+                            <li>Real-time compliance dashboard</li>
+                            <li>Before/after comparison tools</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-roi">Saves 2-3 hours per store per week</div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon">✅</div>
+                    <h3>Store Visit</h3>
+                    <p>Structured visit management for district managers and regional teams.</p>
+
+                    <div class="module-features">
+                        <h4>What It Does:</h4>
+                        <ul>
+                            <li>Customizable visit checklists with scoring</li>
+                            <li>Photo/video capture with notes</li>
+                            <li>Action item creation and tracking</li>
+                            <li>Issue escalation and follow-up</li>
+                            <li>Analytics on visit trends and compliance</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-roi">30% more stores visited per day</div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon">🎓</div>
+                    <h3>Academy</h3>
+                    <p>Retail-specific training designed for frontline teams, not corporate.</p>
+
+                    <div class="module-features">
+                        <h4>What It Does:</h4>
+                        <ul>
+                            <li>Product knowledge microlearning</li>
+                            <li>Customer service scenarios</li>
+                            <li>VM standards and compliance training</li>
+                            <li>Mobile-first (complete during breaks)</li>
+                            <li>Role-based learning paths</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-roi">Cost-optimized for frontline at scale</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">How HEKA Works: Integration + Intelligence</h2>
+            <p class="section-subtitle">
+                The AI assistant your team actually uses every day
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">🔗</span>
+                    <h3>Integration Hub</h3>
+                    <p>HEKA connects your existing systems - scheduling tools, LMS platforms, task management, communication tools. One login. One interface. No separate apps.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Vertical Modules</h3>
+                    <p>Visual Merchandising, Store Visit, Academy - capabilities that don't exist in generic platforms. Built specifically for multi-location retail operations.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🤖</span>
+                    <h3>AI-Powered Guidance</h3>
+                    <p>Starts reactive: "Where's my training?" Becomes proactive: "Complete this before Monday." Context-aware intelligence that evolves with your team's patterns.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>Real-Time Dashboard</h3>
+                    <p>See everything across all stores: VM compliance %, task completion, training status, visit schedules. One view. Real-time. Finally, operational visibility.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📱</span>
+                    <h3>Mobile-First Experience</h3>
+                    <p>Built for store associates who don't sit at desks. Offline mode. One-tap actions. Works on any device. That's why we have 83% daily active usage.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <h3>Proven Results</h3>
+                    <p>67% faster task feedback (6hr → 2hr). 12% overtime reduction through better scheduling. 90%+ VM compliance vs 60% with email/spreadsheets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="nrf-section">
+        <div class="container">
+            <h2>Meet Us at NRF 2026</h2>
+            <p class="nrf-details">📍 Level 1 · Booth #2803</p>
+            <p class="nrf-info">
+                January 11-13, 2026 · Jacob K. Javits Convention Center, New York City
+            </p>
+            <p class="nrf-info">
+                Book a 15-minute demo and see how HEKA TRM's Visual Merchandising, Store Visit, and AI assistant transform store operations.
+            </p>
+            <a href="#meeting" class="cta-button">Schedule Your Demo Now</a>
+        </div>
+    </section>
+
+    <section id="meeting" class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="section-title" style="margin-bottom: 40px;">Request Your NRF Demo</h2>
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Work Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Job Title *</label>
+                        <input type="text" id="title" name="title" placeholder="e.g., VP Operations, Store Operations Director" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stores">Number of Store Locations</label>
+                        <select id="stores" name="stores">
+                            <option value="">Select range</option>
+                            <option value="1-10">1-10 stores</option>
+                            <option value="11-50">11-50 stores</option>
+                            <option value="51-100">51-100 stores</option>
+                            <option value="100+">100+ stores</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="challenge">Biggest Operational Challenge</label>
+                        <select id="challenge" name="challenge">
+                            <option value="">Select challenge</option>
+                            <option value="tool-sprawl">Too many separate tools</option>
+                            <option value="vm-workflow">No VM workflow</option>
+                            <option value="store-visits">Store visits inefficient</option>
+                            <option value="training">Training not reaching stores</option>
+                            <option value="visibility">No real-time visibility</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="attending">Will you attend NRF 2026? *</label>
+                        <select id="attending" name="attending" required>
+                            <option value="">Select option</option>
+                            <option value="yes-booth">Yes, I'll visit your booth</option>
+                            <option value="yes-schedule">Yes, I'd like to schedule a specific time</option>
+                            <option value="no-virtual">No, but I want a virtual demo</option>
+                            <option value="maybe">Maybe, send me more info</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Additional Notes (Optional)</label>
+                        <textarea id="message" name="message" placeholder="Any specific areas you'd like to discuss?"></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Request Demo</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Hekanize. HEKA TRM is a registered trademark. All rights reserved.</p>
+            <p class="tagline">Your team's AI assistant. Perfect store execution. Every time.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

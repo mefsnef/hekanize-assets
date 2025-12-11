@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics: One Source of Truth for Operational Data | HEKA TRM at NRF 2026</title>
+    <meta name="description" content="HEKA TRM unifies all operational data. Real-time analytics. Zero ETL pipelines. API-first for BI tools. Plus retail-specific metrics. Meet us at NRF 2026, Booth #2803.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --dark-bg: #000000;
+            --dark-surface: #0F0F0F;
+            --dark-elevated: #1A1A1A;
+            --dark-border: #2A2A2A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #6B6B6B;
+            --accent-pink: #ec4899;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--dark-border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nrf-badge {
+            background: linear-gradient(135deg, var(--accent-pink), #f472b6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-surface) 100%);
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 60px);
+            font-weight: 900;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .hero .description {
+            font-size: clamp(16px, 2vw, 19px);
+            max-width: 800px;
+            margin: 0 auto 48px;
+            color: var(--text-tertiary);
+            line-height: 1.7;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .cta-secondary {
+            background: var(--dark-elevated);
+            color: var(--text-primary);
+            border: 2px solid var(--dark-border);
+        }
+
+        .cta-secondary:hover {
+            background: var(--dark-surface);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--dark-surface);
+            padding: 60px 0;
+            border-top: 1px solid var(--dark-border);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 24px;
+            border-radius: 16px;
+            background: var(--dark-elevated);
+            border: 1px solid var(--dark-border);
+        }
+
+        .stat-item h3 {
+            font-size: clamp(40px, 6vw, 56px);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .stat-item p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            text-align: center;
+            color: var(--text-tertiary);
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Card Grids */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--dark-elevated);
+            padding: 32px;
+            border-radius: 20px;
+            border: 1px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Data Architecture Section */
+        .data-architecture {
+            background: var(--dark-surface);
+            padding: 100px 0;
+        }
+
+        .architecture-diagram {
+            background: var(--dark-elevated);
+            border: 2px solid var(--dark-border);
+            border-radius: 24px;
+            padding: 60px 40px;
+            max-width: 900px;
+            margin: 60px auto;
+        }
+
+        .architecture-layer {
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .architecture-layer:last-child {
+            margin-bottom: 0;
+        }
+
+        .layer-tools {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px dashed var(--primary);
+        }
+
+        .layer-heka {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .layer-output {
+            background: rgba(236, 72, 153, 0.1);
+            border: 2px dashed var(--accent-pink);
+        }
+
+        .architecture-layer h4 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .architecture-layer p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .arrow-down {
+            text-align: center;
+            font-size: 32px;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        /* Metrics Section */
+        .metrics-showcase {
+            background: var(--dark-bg);
+            padding: 100px 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .metric-card {
+            background: var(--dark-elevated);
+            padding: 32px 28px;
+            border-radius: 16px;
+            border: 2px solid var(--dark-border);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .metric-category {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .metric-card h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .metric-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .metric-card li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .metric-card li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* NRF Section */
+        .nrf-section {
+            background: linear-gradient(135deg, var(--accent-pink), #f472b6);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .nrf-section h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            margin-bottom: 24px;
+        }
+
+        .nrf-details {
+            font-size: clamp(20px, 3vw, 28px);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .nrf-info {
+            font-size: clamp(16px, 2vw, 20px);
+            margin-bottom: 48px;
+            opacity: 0.95;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 100px 0;
+            background: var(--dark-surface);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--dark-elevated);
+            padding: 48px;
+            border-radius: 24px;
+            border: 1px solid var(--dark-border);
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--dark-border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-surface);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: var(--text-secondary);
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        footer p {
+            margin-bottom: 12px;
+        }
+
+        footer .tagline {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0 50px;
+            }
+            .section {
+                padding: 60px 0;
+            }
+            .cta-button, .cta-secondary {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">HEKA TRM</div>
+                <div class="nrf-badge">NRF 2026 · Booth #2803</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>One Source of Truth for Operational Data</h1>
+                <p class="subtitle">Unified Data. Real-Time Analytics. Zero ETL Pipelines.</p>
+                <p class="description">
+                    HEKA TRM normalizes all operational data from scheduling, training, tasks, and retail-specific modules into one unified database. API-first architecture for BI tools. Plus unique retail metrics that don't exist elsewhere.
+                </p>
+                <div class="cta-container">
+                    <a href="#meeting" class="cta-button">See the Data Architecture</a>
+                    <a href="#metrics" class="cta-secondary">Explore Metrics</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>1</h3>
+                    <p>Unified Database</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>ETL Pipelines Needed</p>
+                </div>
+                <div class="stat-item">
+                    <h3>&lt;1s</h3>
+                    <p>Real-Time Sync Latency</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>Data Integrations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">The Data Challenges You Face</h2>
+            <p class="section-subtitle">
+                Operational analytics shouldn't require a data engineering team
+            </p>
+            <div class="card-grid">
+                <div class="card">
+                    <span class="card-icon">🗂️</span>
+                    <h3>Data Silos Across Integrated Tools</h3>
+                    <p>You integrated scheduling, LMS, and task management. Great! But now data is still in 3 separate databases. How do you analyze cross-tool metrics?</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔧</span>
+                    <h3>ETL Pipeline Maintenance</h3>
+                    <p>Every integration needs ETL. Every schema change breaks your pipelines. Dev time spent on plumbing, not insights. Constant maintenance overhead.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>No Retail-Specific Metrics</h3>
+                    <p>Generic platforms track "messages sent" and "tasks completed." Where's VM compliance %? Store visit quality scores? Training effectiveness by role?</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🕐</span>
+                    <h3>Batch Processing Delays</h3>
+                    <p>Data syncs overnight. Reports show yesterday's reality. Can't respond to issues in real-time. Always looking backwards, never forward.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔗</span>
+                    <h3>Incomplete Picture</h3>
+                    <p>Can't connect: Training completion → Task performance → Store results. Data disconnected. Cross-functional insights impossible without manual joins.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📈</span>
+                    <h3>BI Tool Integration Complexity</h3>
+                    <p>Each source system needs custom connector. Tableau has 8 data sources. Queries are slow. Joins are nightmares. Dashboard refresh takes minutes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="data-architecture">
+        <div class="container">
+            <h2 class="section-title">How HEKA Unifies Operational Data</h2>
+            <p class="section-subtitle">
+                One normalized database. Real-time sync. API-first for your BI tools.
+            </p>
+
+            <div class="architecture-diagram">
+                <div class="architecture-layer layer-tools">
+                    <h4>Your Existing Tools</h4>
+                    <p>Scheduling, LMS, Task Management, Communication, Custom Systems</p>
+                </div>
+
+                <div class="arrow-down">↓</div>
+
+                <div class="architecture-layer layer-heka">
+                    <h4>HEKA Unified Database</h4>
+                    <p>All operational data normalized in one schema. Real-time event stream. Complete audit trail and data lineage.</p>
+                </div>
+
+                <div class="arrow-down">↓</div>
+
+                <div class="architecture-layer layer-output">
+                    <h4>Your BI Tools</h4>
+                    <p>Tableau, Power BI, Looker, Custom Dashboards via REST + GraphQL APIs</p>
+                </div>
+            </div>
+
+            <div class="card-grid" style="margin-top: 80px;">
+                <div class="card">
+                    <span class="card-icon">🗄️</span>
+                    <h3>Unified Operational Database</h3>
+                    <p>HEKA normalizes data from all integrated tools plus its own modules. One schema. One source of truth. Training + Tasks + Scheduling + VM + Store Visits.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <h3>Real-Time Event Stream</h3>
+                    <p>Every action creates event. Task completed → Event. Training done → Event. VM approved → Event. Sub-second latency. No batch processing.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🔌</span>
+                    <h3>API-First Architecture</h3>
+                    <p>REST + GraphQL APIs. Connect Tableau, Power BI, Looker, custom dashboards. Well-documented. Rate limits designed for BI workloads. OpenAPI spec.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Retail-Specific Metrics</h3>
+                    <p>VM compliance %, Store Visit quality scores, Academy engagement metrics, Task completion by location. Retail-specific KPIs that competitors can't provide.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🔧</span>
+                    <h3>Zero ETL Required</h3>
+                    <p>Pre-built integrations do transformation. Normalized schema maintained automatically. Your data team builds insights, not pipelines. Focus on analysis, not plumbing.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>Cross-Functional Analysis</h3>
+                    <p>Training completion → Task performance → Store results. VM compliance → Customer satisfaction. Connect metrics across systems. Complete operational picture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="metrics" class="metrics-showcase">
+        <div class="container">
+            <h2 class="section-title">Retail Metrics That Don't Exist Elsewhere</h2>
+            <p class="section-subtitle">
+                Generic platforms track generic metrics. HEKA tracks what matters in retail.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-category">Visual Merchandising</div>
+                    <h4>VM Compliance & Quality</h4>
+                    <ul>
+                        <li>Compliance % by store/region</li>
+                        <li>Approval time (submission → approval)</li>
+                        <li>Photo quality scores (AI-powered)</li>
+                        <li>Rework rate (rejected submissions)</li>
+                        <li>Trend analysis over time</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-category">Store Visit</div>
+                    <h4>Visit Quality & Efficiency</h4>
+                    <ul>
+                        <li>Visit frequency by store</li>
+                        <li>Checklist compliance scores</li>
+                        <li>Issue resolution time</li>
+                        <li>Action item completion rate</li>
+                        <li>Store performance trends</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-category">Academy</div>
+                    <h4>Training Effectiveness</h4>
+                    <ul>
+                        <li>Completion rate by role/location</li>
+                        <li>Time-to-competency</li>
+                        <li>Engagement metrics (video views, quiz scores)</li>
+                        <li>Training → Performance correlation</li>
+                        <li>Certification tracking</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-category">Task Management</div>
+                    <h4>Execution Speed</h4>
+                    <ul>
+                        <li>Task completion time (6hr → 2hr avg)</li>
+                        <li>Feedback loop speed</li>
+                        <li>Overdue task rate</li>
+                        <li>Cross-location comparison</li>
+                        <li>Priority vs completion correlation</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-category">Scheduling</div>
+                    <h4>Labor Optimization</h4>
+                    <ul>
+                        <li>Overtime hours vs target</li>
+                        <li>Coverage gaps by shift</li>
+                        <li>Shift swap frequency</li>
+                        <li>Schedule adherence %</li>
+                        <li>Labor cost per transaction</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-category">Performance</div>
+                    <h4>Store KPIs</h4>
+                    <ul>
+                        <li>UPT (Units Per Transaction)</li>
+                        <li>AT (Average Transaction)</li>
+                        <li>Traffic vs conversion</li>
+                        <li>Sales per sq ft</li>
+                        <li>Staff productivity metrics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="nrf-section">
+        <div class="container">
+            <h2>Meet Us at NRF 2026</h2>
+            <p class="nrf-details">📍 Level 1 · Booth #2803</p>
+            <p class="nrf-info">
+                January 11-13, 2026 · Jacob K. Javits Convention Center, New York City
+            </p>
+            <p class="nrf-info">
+                Book a 15-minute technical demo and see HEKA's unified data model, API architecture, and retail-specific analytics.
+            </p>
+            <a href="#meeting" class="cta-button">Schedule Technical Demo</a>
+        </div>
+    </section>
+
+    <section id="meeting" class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="section-title" style="margin-bottom: 40px;">Request Your NRF Demo</h2>
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Work Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Job Title *</label>
+                        <input type="text" id="title" name="title" placeholder="e.g., Director of Analytics, BI Manager" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bi-tools">Current BI Tools Used</label>
+                        <select id="bi-tools" name="bi-tools" multiple size="4">
+                            <option value="tableau">Tableau</option>
+                            <option value="powerbi">Power BI</option>
+                            <option value="looker">Looker</option>
+                            <option value="other">Other/Custom</option>
+                        </select>
+                        <small style="color: var(--text-tertiary); font-size: 13px;">Hold Ctrl/Cmd to select multiple</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="data-sources">Number of Operational Data Sources</label>
+                        <select id="data-sources" name="data-sources">
+                            <option value="">Select range</option>
+                            <option value="3-5">3-5 sources</option>
+                            <option value="6-10">6-10 sources</option>
+                            <option value="11-15">11-15 sources</option>
+                            <option value="15+">15+ sources</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="attending">Will you attend NRF 2026? *</label>
+                        <select id="attending" name="attending" required>
+                            <option value="">Select option</option>
+                            <option value="yes-booth">Yes, I'll visit your booth</option>
+                            <option value="yes-schedule">Yes, I'd like to schedule a specific time</option>
+                            <option value="no-virtual">No, but I want a virtual demo</option>
+                            <option value="maybe">Maybe, send me more info</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Biggest Data Challenge (Optional)</label>
+                        <textarea id="message" name="message" placeholder="e.g., Data silos, ETL maintenance, no retail-specific metrics..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Request Demo</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Hekanize. HEKA TRM is a registered trademark. All rights reserved.</p>
+            <p class="tagline">One database. Real-time insights. Zero ETL pipelines.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
